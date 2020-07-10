@@ -2,6 +2,7 @@ import telegram
 from apscheduler.schedulers.blocking import BlockingScheduler
 from multiprocessing import Process, Queue
 import crawling
+import coindb
 
 bot = telegram.Bot(token = "1344514128:AAGLLNrfIgMME0CXcqDQbXFz7y--Hl7MJto")
 id_list = []
@@ -15,17 +16,19 @@ def id_updates():
 			print("update", i.message.chat.id)
 
 def send():
-	L = crawling.new_notice()
+	newnotice = coindb.new_notice()
 	for i in id_list:
 		print("send...", i)
-		for j in L:
+		for j in newnotice:
 			bot.sendMessage(chat_id = i, text = j)
 		tmpmsg = "비트코인 :" + crawling.new_coinchart()['비트코인']
 		bot.sendMessage(chat_id = i, text = tmpmsg)
 
 if __name__ == '__main__':
+	#coindb.startdb()
 	sched = BlockingScheduler()
 	id_updates()
+	
 	send()
 	
 	sched.add_job(id_updates, 'interval', minutes = 1)

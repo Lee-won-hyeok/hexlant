@@ -3,55 +3,42 @@ import urllib.request
 import requests
 import ssl
 import re
+import json
+from datetime import datetime
 
 context = ssl._create_unverified_context()
 
-#getsoup
 def getsoup(url):
-    req = urllib.request.Request(url, headers = {'User-Agent':'Mozilla/5.0'})
+    #req = urllib.request.Request(url, headers = {'User-Agent':'Mozilla/5.0 (Windows; U; Windows NT 5.1;'})
+    req = urllib.request.Request(url, headers = {'User-Agent':'Chrome/66.0.3359.181'})
     html = urllib.request.urlopen(req, context = context).read()
     soup = BeautifulSoup(html, 'html.parser')
     return soup
 
-#bithumb
-"""
-class bithumb:
-    def __init__(self):
-        self.url = 'https://www.bithumb.com/'
-    
-    def getnotice(self):
-        self.soup = getsoup(self.url)
-        self.notice = self.soup.find_all('a', {'href': re.compile("https://cafe.bithumb.com/view/board-contents/[0-9]+")}, {'rel' : "noopener noreferrer"})
-        self.notice_history = []
-        del self.notice[:7]
-        del self.notice[2:]
-        tmp = 0
-        while(tmp < len(self.notice)):
-            self.notice[tmp] = self.notice[tmp].text
-            tmp += 1
-"""
-notice_history = []
+def bithumb_notice(flag = -1):
+    pagenum = 0
+    noticedic = {}
+    while(pagenum != flag):
+        url = 'https://cafe.bithumb.com/view/boards/43?pageNumber=' + str(pagenum)
+        soup = getsoup(url)
+        notice = soup.find_all(class_= 'col-20')
+        if notice == []:
+            return noticedic
+        for i in notice[3:]:
+            address_compiler = re.compile('[0-9]+')
+            address = 'https://cafe.bithumb.com/view/board-contents/' + str(address_compiler.findall(i.attrs['onclick'])[0])
+        
+            num = i.find_all('td')[0].text        
+            title = i.find_all('td')[1].text
+            date = i.find_all('td')[2].text
 
-def new_notice():
-    L = []
-    for i in bithumb_notice():
-        if i not in notice_history:
-            notice_history.append(i)
-            L.append(i)
-    return L
+            if re.compile('[0-9]{4}[.][0-9]{2}[.][0-9]{2}').match(date) == None:
+                date = datetime.today().strftime("%Y.%m.%d")
 
-def bithumb_notice():
-    url = 'https://www.bithumb.com/'
-    soup = getsoup(url)
-    
-    notice = soup.find_all('a', {'href': re.compile("https://cafe.bithumb.com/view/board-contents/[0-9]+")}, {'rel' : "noopener noreferrer"})
-    del notice[:7]
-    del notice[2:]
-    tmp = 0
-    while(tmp < len(notice)):
-        notice[tmp] = notice[tmp].text
-        tmp += 1
-    return notice
+            noticedic[num] = []
+            noticedic[num] = {"title" : title, "date" : date, "link" : address, "extype" : 1, "num" : num}
+        pagenum += 1
+    return noticedic
 
 def new_coinchart():
     url = 'https://www.bithumb.com/'
@@ -75,3 +62,11 @@ def new_coinchart():
     return chartdic
 
 #upbit
+
+
+#update:notice information
+def note_update():
+    new_db = []
+    new_db.append(bithumb_notice())
+
+    return new_db
