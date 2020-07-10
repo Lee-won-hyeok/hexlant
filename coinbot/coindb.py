@@ -10,7 +10,7 @@ coinone_col = db['coinone']
 korbit_col = db['korbit']
 
 def startdb():
-    tokens = crawling.note_update()
+    tokens = crawling.note_start()
     
     #bithumb
     bithumb_token = tokens[0]
@@ -18,7 +18,12 @@ def startdb():
         notice_id = bithumb_col.insert_one(i).inserted_id
         print("added", notice_id)
     
-    #
+    #coinone
+    coinone_token = tokens[1]
+    for i in coinone_token.values():
+        notice_id = coinone_col.insert_one(i).inserted_id
+        print("added", notice_id)
+
     #
     #
 
@@ -31,10 +36,23 @@ def new_notice():
             L.append(title)
             notice_id = bithumb_col.insert_one(i).inserted_id
             print("refresh: added", notice_id)
+
+    #coinone
+    for i in crawling.coinone_notice(1).values():
+        if coinone_col.find_one({'num' : i['num']}) == None:
+            title = "coinone|" + i['title']
+            L.append(title)
+            notice_id = coinone_col.insert_one(i).inserted_id
+            print("refresh: added", notice_id)
+    
+    #
+    #
+
     return L
 
 def init_col(collection):
     collection.remove()
 
-#init_col(bithumb_col)
-#startdb()
+def init_db():
+    init_col(bithumb_col)
+    init_col(coinone_col)

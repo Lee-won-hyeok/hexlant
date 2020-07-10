@@ -5,6 +5,8 @@ import ssl
 import re
 import json
 from datetime import datetime
+from selenium import webdriver
+from time import sleep
 
 context = ssl._create_unverified_context()
 
@@ -61,12 +63,54 @@ def new_coinchart():
         
     return chartdic
 
-#upbit
+#coinone
+def coinone_notice(flag = -1):
+    noticedic = {}
+    driver = webdriver.Chrome('C:/Users/LWH/Documents/VS/chromedriver.exe')
+    url = 'https://coinone.co.kr/talk/notice'
+    driver.implicitly_wait(1)
+    driver.get(url)
+    sleep(7) #Pass 403 Page
 
+    pagenum = 0
+    while(pagenum != flag):
+        sleep(1)
+        html = driver.page_source
+        soup = BeautifulSoup(html, 'html.parser')
+        category = soup.find_all(class_="card_category")
+        title = soup.find_all(class_="card_summary_title")
+        date = soup.find_all(class_="card_time")
+        
+        driver.find_elements_by_xpath("//a[@class = 'card_link']")[0].click()
+        sleep(1)
+        recentlink = driver.current_url
+        num = re.compile('[0-9]+').findall(recentlink)[0]
+
+        for i in range(len(title)):
+            noticedic[int(num) - i] = {"title" : "[" + category[i].text.replace(' ','') + "]" + title[i].text, "date" : date[i].text, "link" : 'https://coinone.co.kr/talk/notice/detail/' + str(int(num) - i), "extype" : 2, "num" : int(num) - i}
+            #print(noticedic[int(num) - i])
+            if int(num) - i == 1:
+                driver.quit()
+                return noticedic
+        driver.back()
+        sleep(1)
+        pagenum += 1
+        driver.find_elements_by_xpath("//a[@class = 'page-link']")[-1].click()
+    driver.quit()
+    return noticedic
+
+#upbit
+def upbit_notice(flag = -1):
+    noticedic = {}
+    url = 'https://upbit.com/service_center/notice'
+    req = urllib.request.Request(url, headers = {'User-Agent':'Chrome/66.0.3359.181'})
+    html = urllib.request.urlopen(req, context = context).read()
+    soup = BeautifulSoup(html, 'html.parser')
 
 #update:notice information
-def note_update():
+def note_start():
     new_db = []
     new_db.append(bithumb_notice())
+    new_db.append(coinone_notice())
 
     return new_db
