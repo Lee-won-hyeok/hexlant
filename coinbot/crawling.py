@@ -66,7 +66,13 @@ def new_coinchart():
 #coinone
 def coinone_notice(flag = -1):
     noticedic = {}
-    driver = webdriver.Chrome('C:/Users/LWH/Documents/VS/chromedriver.exe')
+
+    options = webdriver.ChromeOptions()
+    options.add_argument('headless')
+    options.add_argument('window-size=1920x1080')
+    options.add_argument("disable-gpu")
+
+    driver = webdriver.Chrome('C:/Users/LWH/Documents/VS/chromedriver.exe', chrome_options=options)
     url = 'https://coinone.co.kr/talk/notice'
     driver.implicitly_wait(1)
     driver.get(url)
@@ -103,9 +109,15 @@ def coinone_notice(flag = -1):
 def upbit_notice(flag = -1):
     noticedic = {}
     url = 'https://upbit.com/service_center/notice'
-    req = urllib.request.Request(url, headers = {'User-Agent':'Chrome/66.0.3359.181'})
-    html = urllib.request.urlopen(req, context = context).read()
+    driver = webdriver.Chrome('C:/Users/LWH/Documents/VS/chromedriver.exe')
+    driver.implicitly_wait(1)
+    driver.get(url)
+    sleep(7)
+    html = driver.page_source
     soup = BeautifulSoup(html, 'html.parser')
+    title = soup.find_all("td", {'class' : ']Aligh'})
+    print(soup)
+    print(title)
 
 #update:notice information
 def note_start():
@@ -114,3 +126,6 @@ def note_start():
     new_db.append(coinone_notice())
 
     return new_db
+
+
+#upbit_notice()

@@ -32,7 +32,7 @@ def new_notice():
     L = []
     for i in crawling.bithumb_notice(1).values():
         if bithumb_col.find_one({'num' : i['num']}) == None:
-            title = "bithumb|" + i['title']
+            title = "bithumb|" + i['title'] + "\n" + i['link']
             L.append(title)
             notice_id = bithumb_col.insert_one(i).inserted_id
             print("refresh: added", notice_id)
@@ -40,7 +40,7 @@ def new_notice():
     #coinone
     for i in crawling.coinone_notice(1).values():
         if coinone_col.find_one({'num' : i['num']}) == None:
-            title = "coinone|" + i['title']
+            title = "coinone|" + i['title'] + "\n" + i['link']
             L.append(title)
             notice_id = coinone_col.insert_one(i).inserted_id
             print("refresh: added", notice_id)
