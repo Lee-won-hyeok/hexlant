@@ -24,8 +24,17 @@ def startdb():
         notice_id = coinone_col.insert_one(i).inserted_id
         print("added", notice_id)
 
-    #
-    #
+    #upbit
+    upbit_token = tokens[1]
+    for i in upbit_token.values():
+        notice_id = upbit_col.insert_one(i).inserted_id
+        print("added", notice_id)
+    
+    #korbit
+    korbit_token = tokens[1]
+    for i in korbit_token.values():
+        notice_id = korbit_col.insert_one(i).inserted_id
+        print("added", notice_id)
 
 def new_notice():
     #bithumb
@@ -45,8 +54,21 @@ def new_notice():
             notice_id = coinone_col.insert_one(i).inserted_id
             print("refresh: added", notice_id)
     
-    #
-    #
+    #upbit
+    for i in crawling.upbit_notice(1).values():
+        if upbit_col.find_one({'num' : i['num']}) == None:
+            title = "upbit|" + i['title'] + "\n" + i['link']
+            L.append(title)
+            notice_id = upbit_col.insert_one(i).inserted_id
+            print("refresh: added", notice_id)
+
+    #korbit
+    for i in crawling.korbit_notice(1).values():
+        if korbit_col.find_one({'num' : i['num']}) == None:
+            title = "korbit|" + i['title'] + "\n" + i['link']
+            L.append(title)
+            notice_id = korbit_col.insert_one(i).inserted_id
+            print("refresh: added", notice_id)
 
     return L
 
@@ -56,3 +78,5 @@ def init_col(collection):
 def init_db():
     init_col(bithumb_col)
     init_col(coinone_col)
+    init_col(upbit_col)
+    init_col(korbit_col)

@@ -63,7 +63,7 @@ def new_coinchart():
         
     return chartdic
 
-#coinone
+#coinone 
 def coinone_notice(flag = -1):
     noticedic = {}
 
@@ -105,27 +105,88 @@ def coinone_notice(flag = -1):
     driver.quit()
     return noticedic
 
-#upbit
+#upbit // 전체 긁어오기 구현안함
 def upbit_notice(flag = -1):
     noticedic = {}
+
+    options = webdriver.ChromeOptions()
+    options.add_argument('headless')
+    options.add_argument('window-size=1920x1080')
+    options.add_argument("disable-gpu")
+
     url = 'https://upbit.com/service_center/notice'
-    driver = webdriver.Chrome('C:/Users/LWH/Documents/VS/chromedriver.exe')
+    driver = webdriver.Chrome('C:/Users/LWH/Documents/VS/chromedriver.exe', options = options)
     driver.implicitly_wait(1)
     driver.get(url)
-    sleep(7)
+    sleep(8)
     html = driver.page_source
     soup = BeautifulSoup(html, 'html.parser')
-    title = soup.find_all("td", {'class' : ']Aligh'})
-    print(soup)
-    print(title)
+    link = soup.find_all("td", {'class' : 'lAlign'})
+    title = soup.find_all("td", {'class' : 'lAlign'})
+    num = []
+    for i in range(len(title)):
+        title[i] = title[i].a.text
+        link[i] = "https://upbit.com" + link[i].a['href']
+        num.append(re.compile('[0-9]{1,4}').findall(link[i])[0])
+    
+    data = soup.find_all("td")
+    date = []
+    for i in data:
+        cmplr = re.compile('[0-9]{4}[.][0-9]{2}[.][0-9]{2}')
+        if cmplr.findall(i.text) != []:
+            date.append(cmplr.findall(i.text)[0])
+    for i in range(len(title) - len(date)):
+        date.insert(0, 'null')
+    #print(title)
+    #print(date)
+    #print(link)
+    #print(num)
+    for i in range(len(title)):
+        noticedic[num[i]] = {"title" : title[i], "date" : date[i], "link" : link[i], "extype" : 3, "num" : num[i]}
+    return noticedic
+
+#korbit // 전체 긁어오기 구현안함
+def korbit_notice(flag = -1):
+    noticedic = {}
+    
+    options = webdriver.ChromeOptions()
+    options.add_argument('headless')
+    options.add_argument('window-size=1920x1080')
+    options.add_argument("disable-gpu")
+
+    url = 'https://www.korbit.co.kr/notice/'
+    driver = webdriver.Chrome('C:/Users/LWH/Documents/VS/chromedriver.exe', options = options)
+    driver.implicitly_wait(1)
+    driver.get(url)
+    sleep(4)
+    html = driver.page_source
+    soup = BeautifulSoup(html, 'html.parser')
+    title = soup.find_all(class_ = "styled__Tr-l4nq3x-4")
+    date = soup.find_all(class_ = "styled__Tr-l4nq3x-4")
+    link = []
+    num = []
+    for i in range(len(title)):
+        title[i] = title[i].find_all("td")[1].text
+        date[i] = date[i].find_all("td")[2].text
+
+    link.append(driver.current_url)
+    num.append(driver.current_url.split('=')[1])
+    for i in range(len(driver.find_elements_by_xpath("//tr[@class = 'styled__Tr-l4nq3x-4 iAAYmx']"))):
+        driver.find_elements_by_xpath("//tr[@class = 'styled__Tr-l4nq3x-4 iAAYmx']")[i].click()
+        sleep(0.5)
+        link.append(driver.current_url)
+        num.append(driver.current_url.split('=')[1])
+    for i in range(len(title)):
+        noticedic[num[i]] = {"title" : title[i], "date" : date[i], "link" : link[i], "extype" : 4, "num" : num[i]}
+    #print(noticedic)
+    return noticedic
 
 #update:notice information
 def note_start():
     new_db = []
     new_db.append(bithumb_notice())
     new_db.append(coinone_notice())
+    new_db.append(upbit_notice())
+    new_db.append(korbit_notice())
 
     return new_db
-
-
-#upbit_notice()
