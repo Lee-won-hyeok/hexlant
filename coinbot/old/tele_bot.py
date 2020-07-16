@@ -23,15 +23,14 @@ def send():
 		for j in newnotice:
 			bot.sendMessage(chat_id = i, text = j)
 			"""
-		#tmpmsg = "비트코인 :" + crawling.new_coinchart()['비트코인']
-		#bot.sendMessage(chat_id = i, text = tmpmsg)
+
 	for j in newnotice:
 		bot.sendMessage(chat_id = -1001493621312, text = j)
 
 if __name__ == '__main__':
 	command = 'S'
 	while command == 'S' or command == 'B' or command == 'I':
-		command = input("db Build: B, init db: I, set Bot schedule: S, quit: else\n")
+		command = input("Build: B, init: I, run scheduler: S, quit: else\n")
 	
 		if command == 'B':
 			coindb.startdb() 
@@ -42,5 +41,5 @@ if __name__ == '__main__':
 			#id_updates()
 			send()
 			#sched.add_job(id_updates, 'interval', minutes = 1)
-			sched.add_job(send, 'interval', minutes = 1)
+			sched.add_job(send, 'interval', minutes = 10)
 			sched.start()

@@ -17,7 +17,7 @@ def getsoup(url):
     soup = BeautifulSoup(html, 'html.parser')
     return soup
 
-def bithumb_notice(flag = -1):
+def bithumb_notice(flag = -1): #getnotice
     pagenum = 0
     noticedic = {}
     while(pagenum != flag):
@@ -76,7 +76,7 @@ def coinone_notice(flag = -1):
     url = 'https://coinone.co.kr/talk/notice'
     driver.implicitly_wait(1)
     driver.get(url)
-    sleep(7) #Pass 403 Page
+    sleep(7) #Pass 403
 
     pagenum = 0
     while(pagenum != flag):
@@ -108,7 +108,7 @@ def coinone_notice(flag = -1):
 #upbit // 전체 긁어오기 구현안함
 def upbit_notice(flag = -1):
     noticedic = {}
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
     options = webdriver.ChromeOptions()
     options.add_argument('headless')
     options.add_argument('window-size=1920x1080')
@@ -119,6 +119,7 @@ def upbit_notice(flag = -1):
     driver.implicitly_wait(1)
     driver.get(url)
     sleep(8)
+
     html = driver.page_source
     soup = BeautifulSoup(html, 'html.parser')
     link = soup.find_all("td", {'class' : 'lAlign'})
@@ -178,7 +179,6 @@ def korbit_notice(flag = -1):
         num.append(driver.current_url.split('=')[1])
     for i in range(len(title)):
         noticedic[num[i]] = {"title" : title[i], "date" : date[i], "link" : link[i], "extype" : 4, "num" : num[i]}
-    #print(noticedic)
     return noticedic
 
 #update:notice information
