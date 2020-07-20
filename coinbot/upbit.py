@@ -8,33 +8,27 @@ from dynamicweb import dynamicweb
 class upbit(dynamicweb):
     def __init__(self):
         super().__init__('https://upbit.com/service_center/notice', "upbit|")
+        self.titlexpath = "//*[@id='UpbitLayout']/div[3]/div/section[2]/article/div/div[2]/table/tbody/tr/td[1]/a"
+        self.datexpath = "//*[@id='UpbitLayout']/div[3]/div/section[2]/article/div/div[2]/table/tbody/tr/td[2]"
+        self.linkxpath = "//*[@id='UpbitLayout']/div[3]/div/section[2]/article/div/div[2]/table/tbody/tr/td[1]/a"
+        self.titleattr = 'text'
+        self.dateattr = 'innerHTML'
+        self.linkattr = 'href'
 
     def _getnotice(self, flag = -1):
         super()._getnotice(flag = -1)
         pagenum = 0
         while(pagenum != flag):
             sleep(1)
-            html = self.driver.page_source
-            soup = BeautifulSoup(html, 'html.parser')
-            link = soup.find_all("td", {'class' : 'lAlign'})
-            title = soup.find_all("td", {'class' : 'lAlign'})
-            num = []
-            for i in range(len(title)):
-                title[i] = title[i].a.text
-                link[i] = "https://upbit.com" + link[i].a['href']
-                num.append(re.compile('[0-9]{1,4}').findall(link[i])[0])
-    
-            data = soup.find_all("td")
-            date = []
-            for i in data:
-                cmplr = re.compile('[0-9]{4}[.][0-9]{2}[.][0-9]{2}')
-                if cmplr.findall(i.text) != []:
-                    date.append(cmplr.findall(i.text)[0])
+            title, date, link, num = self._crawl(self.driver, self.titlexpath, self.titleattr, self.datexpath, self.dateattr, self.linkxpath, self.linkattr)
+
             for i in range(len(title) - len(date)):
                 date.insert(0, 'null')
 
             for i in range(len(title)):
                 self.noticedic[num[i]] = {"title" : title[i], "date" : date[i], "link" : link[i], "extype" : 3, "num" : num[i]}
+            
+            #print(self.noticedic)
             
             pagenum += 1
             if((pagenum + 1)%5 == 1):

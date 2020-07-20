@@ -41,7 +41,7 @@ class exchanger(metaclass = ABCMeta):
             notice_id = col.insert_one(i).inserted_id
             print("added", notice_id)
 
-    def send(self): #public
+    def refresh(self): #public
         for j in self._newnotice():
             bot.sendMessage(chat_id = -1001493621312, text = j)
             print("sended")
