@@ -12,7 +12,7 @@ from time import sleep
 import telegram
 import pymongo
 
-client = pymongo.MongoClient('127.0.0.1', 27017)
+client = pymongo.MongoClient('35.200.118.24', 27017)
 db = client['coindb']
 col = db['coincol']
 bot = telegram.Bot(token = "1344514128:AAGLLNrfIgMME0CXcqDQbXFz7y--Hl7MJto")
@@ -27,8 +27,9 @@ class exchanger(metaclass = ABCMeta):
 
     def _newnotice(self): #private
         L = []
+        #print(col.count())
         for i in self._getnotice(1).values():
-            if col.find_one({'num' : i['num']}) == None:
+            if col.find_one({'num' : i['num'], 'extype' : i['extype']}) == None:
                 title = self.nametag + i['title'] + "\n" + i['link']
                 L.append(title)
                 notice_id = col.insert_one(i).inserted_id

@@ -1,0 +1,23 @@
+{
+    "site1": {
+        "webtype" : "static",
+        "type" : "news/community",
+        "attribute" : {
+            "title" : "title xpath",
+            "date" : "date xpath"
+        },
+        "url" : "pagination url"
+    },
+    "site2": {
+        "webtype" : "dynamic",
+        "type" : "news/community",
+        "attribute" : {
+            "title" : "title xpath",
+            "date" : "date xpath"
+        },
+        "link" : {
+            "pagination" : "pagination button link"
+        },
+        "url" : "initial link url"
+    }
+}

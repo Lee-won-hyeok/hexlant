@@ -12,15 +12,21 @@ if __name__ == '__main__':
     korbit_obj = korbit()
 
 ############# build ##############
-    bithumb_obj.dbbuild()
-    coinone_obj.dbbuild()
-    upbit_obj.dbbuild()
-    korbit_obj.dbbuild()
+#    bithumb_obj.dbbuild()
+#    coinone_obj.dbbuild()
+#    upbit_obj.dbbuild()
+#    korbit_obj.dbbuild()
+
+############# start ##############
+    sched = BlockingScheduler()
+    bithumb_obj.refresh()
+    coinone_obj.refresh()
+    upbit_obj.refresh()
+    korbit_obj.refresh()
 
 ############# refresh ##############
-    sched = BlockingScheduler()
-    sched.add_job(bithumb_obj.refresh(), 'interval', minutes = 10)
-    sched.add_job(coinone_obj.refresh(), 'interval', minutes = 10)
-    sched.add_job(upbit_obj.refresh(), 'interval', minutes = 10)
-    sched.add_job(korbit_obj.refresh(), 'interval', minutes = 10)
+    sched.add_job(bithumb_obj.refresh, 'interval', minutes = 5)
+    sched.add_job(coinone_obj.refresh, 'interval', minutes = 5)
+    sched.add_job(upbit_obj.refresh, 'interval', minutes = 5)
+    sched.add_job(korbit_obj.refresh, 'interval', minutes = 5)
     sched.start()

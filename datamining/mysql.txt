@@ -1,0 +1,10 @@
+3306 / 33060
+hexlant0724
+MySQL80
+Mysql
+root
+
+schema: mining
+
+\sql
+\connect root@localhost
