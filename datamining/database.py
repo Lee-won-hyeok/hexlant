@@ -11,6 +11,12 @@ sql_newtable = """CREATE TABLE keywords (
     -> date DATE NOT NULL,
     -> primary KEY (ID)
     -> ) Engine='innoDB' default charset='utf8';"""
+sql_showall = "select * from keywords"
+sql_insert = """insert into keywords (type1, type2, word, count, date)
+         values (%s, %s, %s, %s, %s)"""
+sql_initid = """ALTER TABLE keywords AUTO_INCREMENT=1;
+        SET @COUNT = 0;
+        UPDATE keywords SET ID = @COUNT:=@COUNT+1;"""
 
 db = pymysql.connect(
     user = 'root',
@@ -19,18 +25,7 @@ db = pymysql.connect(
     db = 'mining',
     charset = 'utf8'
 )
-
 cursor = db.cursor(pymysql.cursors.DictCursor)
-
-sql_showall = "select * from keywords"
-sql_insert = """insert into keywords (type1, type2, word, count, date)
-         values (%s, %s, %s, %s, %s)"""
-sql_initid = """ALTER TABLE keywords AUTO_INCREMENT=1;
-        SET @COUNT = 0;
-        UPDATE keywords SET ID = @COUNT:=@COUNT+1;"""
-
-#cursor.execute(sql_newtable)
-
 crldriver = crldriver(headless = True)
 p = preprocessor()
 
