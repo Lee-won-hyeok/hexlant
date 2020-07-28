@@ -1,10 +1,23 @@
-3306 / 33060
-hexlant0724
-MySQL80
-Mysql
-root
+port: 3306 / 33060
+root password: 0000
+window service name: MySQL
+=====================
+root / 0000
+db name: mining
+table name: keywords
+=====================
+id : int(11) / not NULL / auto increment / primary key
+word : varchar(3) / not NULL
+type1 : char(1) / not NULL
+type2 : char(4) / not NULL
+count : unsigned int(11) / not NULL
+date : date / not NULL
+=====================
 
-schema: mining
+mysql -u [user] -p
+show databases;
+create database [dbname] default character set utf8;
+use [dbname];
 
 \sql
 \connect root@localhost
