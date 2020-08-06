@@ -15,7 +15,6 @@ date : date / not NULL
 =====================
 
 mysql -u [user] -p
-show databases;
 create database [dbname] default character set utf8;
 use [dbname];
 

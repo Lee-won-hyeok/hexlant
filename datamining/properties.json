@@ -6,14 +6,14 @@
             "title" : "//*[@id='user-container']/div[3]/div[2]/section/article/div[4]/section/div/div[1]/a/strong",
             "date" : "//*[@id='user-container']/div[3]/div[2]/section/article/div[4]/section/div/div[2]"
         },
-        "link" : {
-            "pagination" : "//*[@id='user-container']/div[3]/div[2]/section/article/div[4]/div[2]/ul/li"
+        "pagination" : {
+            "url" : ""
         },
         "iframe" : "",
         "url" : "http://www.coindeskkorea.com/news/articleList.html?page="
     },
     "coinpan": {
-        "webtype" : "static",
+        "webtype" : "dynamic",
         "type" : "community",
         "attribute" : {
             "title" : "//*[@id='board_list']/table/tbody/tr[not(@class='notice bg1')]/td[2]/a[1]",
@@ -21,7 +21,10 @@
             "time" : "//*[@id='board_list']/table/tbody/tr[not(@class='notice bg1')]/td[4]/span/span"
         },
         "iframe" : "",
-        "url" : "https://coinpan.com/index.php?mid=free&page="
+        "pagination":{
+            "link" : "//*[@id='view_198_0']/div[2]/div/ul/li/a"
+        },
+        "url" : "https://coinpan.com/index.php?mid=free&page=1"
     },
     "bitman" : {
         "webtype" : "dynamic",
@@ -31,7 +34,11 @@
             "date" : "//*[@id='main-area']/div[4]/table/tbody/tr/td[3]"
         },
         "iframe" : "cafe_main",
-        "url" : "https://cafe.naver.com/nexontv?iframe_url=/ArticleList.nhn%3Fsearch.clubid=24978815%26search.boardtype=L%26search.totalCount=151%26search.page="
+        "pagination" : {
+            "link" : "//*[@id='main-area']/div[6]/a",
+            "link2" : "//*[@id='main-area']/div[6]/a[@class='pgR']"
+        },
+        "url" : "https://cafe.naver.com/nexontv?iframe_url=/ArticleList.nhn%3Fsearch.clubid=24978815%26search.boardtype=L%26search.totalCount=151%26search.page=1"
     },
     "cobak" : {
         "webtype" : "dynamic",
@@ -41,16 +48,49 @@
             "date" : "//*[@id='root']/div/div[2]/section/main/div[1]/div[2]/div[2]/div/a/div/div/div/div[2]/div[4]"
         },
         "iframe" : "",
-        "url" : "https://cobak.co.kr/community/all?p="
+        "pagination" : {
+            "link" : "//*[@id='root']/div/div[2]/section/main/div[1]/div[2]/div[2]/ul/li/a"
+        },
+        "url" : "https://cobak.co.kr/community/all?p=1"
     },
     "decenter" : {
-        "webtype" : "static",
+        "webtype" : "dynamic",
         "type" : "news",
         "attribute" : {
             "title" : "//*[@id='m-left-scroll-in']/ul/li/div/dl/dt/a/span",
             "date" : "//*[@id='m-left-scroll-in']/ul/li/div/dl/dd[1]/span[2]"
         },
         "iframe" : "",
+        "pagination" : {
+            "link" : "//*[@id='m-left-scroll-in']/div[1]/ol/li/a",
+            "link2" : "//*[@id='m-left-scroll-in']/div[1]/ol/li[@class='e_next']"
+        },
         "url" : "https://www.decenter.kr/NewsList/GZ0"
+    },
+    "blockmedia" : {
+        "webtype" : "dynamic",
+        "type" : "news",
+        "attribute" : {
+            "title" : "",
+            "date" : ""
+        },
+        "iframe" : "",
+        "pagination" : {
+            "link" : ""
+        },
+        "url" : ""
+    },
+    "joinD" : {
+        "webtype" : "dynamic",
+        "type" : "news",
+        "attribute" : {
+            "title" : "//*[@id='moreRecent']/div[3]/div/div[2]/div[2]/div/a/div[3]/p",
+            "date" : "//*[@id='moreRecent']/div[3]/div/div[2]/div[2]/div/a/div[1]/span"
+        },
+        "iframe" : "",
+        "pagination" : {
+            "scroll" : ""
+        },
+        "url" : "https://joind.io/moreRecent"
     }
 }

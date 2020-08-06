@@ -6,7 +6,7 @@
             "title" : "title xpath",
             "date" : "date xpath"
         },
-        "url" : "pagination url"
+        "url" : "common url without pagination parameter"
     },
     "site2": {
         "webtype" : "dynamic",
@@ -15,9 +15,11 @@
             "title" : "title xpath",
             "date" : "date xpath"
         },
-        "link" : {
-            "pagination" : "pagination button link"
+        "iframe" : "iframe",
+        "pagination" : {
+            "link" : "pagination button link",
+            "link2" : "pagination index shifting button link"
         },
-        "url" : "initial link url"
+        "url" : "first page url"
     }
 }
